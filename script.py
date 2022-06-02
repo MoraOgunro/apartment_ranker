@@ -42,6 +42,9 @@ class Apartment:
 
         self.score = round(self.score)
 
+    def get_score(self):
+        return self.score
+
 
 apartment_List: Apartment = []
 
@@ -53,6 +56,6 @@ with open('Apartments.csv', 'r') as file:
         apartment_List.append(
             Apartment(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]))
 
-print("")
+apartment_List.sort(key=lambda apt: apt.score, reverse=True)
 for apartment in apartment_List:
     print(apartment.score)
