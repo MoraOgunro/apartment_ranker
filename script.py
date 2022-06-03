@@ -1,6 +1,7 @@
 from __future__ import print_function
 import csv
 from textwrap import indent
+from tokenize import Double
 
 
 class Apartment:
@@ -9,7 +10,7 @@ class Apartment:
         self.address = address
         self.building = building
         self.commute = int(commute)
-        self.crime = int(crime)
+        self.crime = float(crime)
         self.pets = int(pets)
         self.beds = int(beds)
         self.doorman = int(doorman)
@@ -53,9 +54,17 @@ with open('Apartments.csv', 'r') as file:
     for index, row in enumerate(reader):
         if index == 0:
             continue
+        print(row)
         apartment_List.append(
             Apartment(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]))
 
 apartment_List.sort(key=lambda apt: apt.score, reverse=True)
-for apartment in apartment_List:
-    print(apartment.score)
+
+with open('results.csv', mode='w') as file:
+    writer = csv.writer(file, delimiter=',', quotechar='"',
+                        quoting=csv.QUOTE_MINIMAL)
+    writer.writerow(["Score", "URL", "Address", "Building", "Commute",
+                    "CrimeRate", "Pets", "Beds", "Doorman", "Elevator"])
+    for index, apartment in enumerate(apartment_List):
+        writer.writerow([apartment.score, apartment.url, apartment.address, apartment.building, apartment.commute, apartment.crime,
+                        "Yes" if apartment.pets else "No", "Studio" if apartment.beds == 0 else f"{apartment.beds}Br", "Yes" if apartment.doorman else "No", "Yes" if apartment.elevator else "No"])
