@@ -19,17 +19,19 @@ class Apartment:
         self.calc_score()
 
     def calc_score(self):
-        CRIME_MULTIPLIER = 1.5  # 30%
-        COMMUTE_MULTIPLIER = 0.66  # 20%
+        CRIME_MULTIPLIER = 2.5  # 50%
+        COMMUTE_MULTIPLIER = 0.5  # 20%
+        NO_PETS = 3  # 3%
+        STUDIO = 5  # 5%
+        NO_DOORMAN = 15  # 15%
+        NO_ELEVATOR = 7  # 7%
+
         SHORT_COMMUTE = 20
-        NO_PETS = 5  # 5%
-        STUDIO = 10  # 10%
-        NO_DOORMAN = 20  # 20%
-        NO_ELEVATOR = 15  # 15%
         LOW_CRIME_RATE = 10
 
         if self.commute > SHORT_COMMUTE:
-            self.score -= (self.commute - SHORT_COMMUTE)*COMMUTE_MULTIPLIER
+            commute = (self.commute - SHORT_COMMUTE)*COMMUTE_MULTIPLIER
+            self.score -= min(commute, 20)
         if self.crime > LOW_CRIME_RATE:
             self.score -= (self.crime - LOW_CRIME_RATE)*CRIME_MULTIPLIER
         if self.pets == 0:
@@ -54,7 +56,7 @@ with open('Apartments.csv', 'r') as file:
     for index, row in enumerate(reader):
         if index == 0:
             continue
-        print(row)
+        # print(row)
         apartment_List.append(
             Apartment(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]))
 
